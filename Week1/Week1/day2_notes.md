@@ -62,3 +62,5 @@ What caused improvement:
 Day 3 target:
 - Push context_recall from 0.80 toward 0.95+
 - Add reranking pass to improve chunk quality further
+
+80% of the time, the retriever found ALL the chunks needed to answer the question completely. The other 20% of the time, it missed at least one important chunk — so the LLM had incomplete information to work with.
