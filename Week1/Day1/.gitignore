@@ -4,3 +4,4 @@ __pycache__
 chroma_db
 .python-version
 README.md
+.editorconfig

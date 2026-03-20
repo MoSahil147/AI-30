@@ -87,3 +87,16 @@ Bug 8: answer_relevancy nan
 → Fix: deferred to Day 2
 
 like readind error cleary, undertstanding hwat iis the issue and also refering to google for issues, rather than LLMs, fix answer relevancy also
+
+
+recap 
+1. RAGAS scores — 9/10 ✅
+Small correction — your final score was faithfulness: 0.8135 not 0.8593. The 0.8593 was an earlier run before we fixed the duplicate chunks. Always remember your FINAL baseline number — that's what you compare Day 2 against.
+2. Faithfulness + Answer Relevancy — 10/10 ✅
+Perfect. Exactly right.
+3. MMR — 7/10 ⚠️
+MMR = Maximal Marginal Relevance. You got the outcome right — avoids duplicates. But the full answer is: "MMR fetches 20 candidate chunks, then picks the 5 most diverse and relevant ones — so you get variety in retrieved chunks, not 5 copies of the same chunk."
+4. Chunk overlap — 10/10 ✅
+"Prevents context loss at boundaries" — perfect.
+5. Set vs List — 10/10 ✅
+Hash lookup = O(1). List iteration = O(n). Perfect.
