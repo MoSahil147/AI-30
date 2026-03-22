@@ -64,3 +64,35 @@ Day 3 target:
 - Add reranking pass to improve chunk quality further
 
 80% of the time, the retriever found ALL the chunks needed to answer the question completely. The other 20% of the time, it missed at least one important chunk — so the LLM had incomplete information to work with.
+
+
+Final Revision
+
+1. BM25 — 6/10 ⚠️
+You got the outcome right but missed the full meaning. BM25 stands for Best Match 25 — it's the 25th iteration of the Best Match ranking algorithm. It finds exact keywords by counting term frequency — how many times a word appears in a document — while penalizing very long documents so they don't dominate just because they're longer.
+
+2. RRF — 8/10 ✅
+Correct on the formula. One addition — RRF stands for Reciprocal Rank Fusion. "Reciprocal" means 1 divided by something. The 60 is a constant that prevents top-ranked results from dominating too much.
+
+3. Day 2 scores — 10/10 ✅
+Perfect. faithfulness 0.96, context_recall 0.80.
+
+4. Context recall — 9/10 ✅
+Almost perfect. Small precision fix: "80% of the time the retriever found ALL chunks needed to answer correctly — the 20% failure means at least one important chunk was missed, causing incomplete or hallucinated answers."
+
+5. Lambda — 7/10 ✅
+You remembered the purpose but forgot the syntax. Here it is:
+python## normal function
+def get_score(x):
+    return chunk_scores[x]
+
+## same thing as lambda
+lambda x: chunk_scores[x]
+Lambda = mini one-line function for one-time use. No name needed.
+
+M25 = Best Match 25
+     = finds by exact keyword frequency
+     = penalizes long documents
+RRF  = Reciprocal Rank Fusion
+     = 1/(rank + 60) — 60 prevents top results dominating
+lambda x: expression = mini function, no name, one-time use
