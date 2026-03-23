@@ -110,3 +110,34 @@ So we call hybrid_search + rerank again to get chunks for RAGAS
 Same chunks the LLM used — just retrieved again for evaluation
 
 "I built a RAG pipeline over 3 days. Day 1 baseline: faithfulness 0.81. Day 2 I added hybrid search — BM25 plus vector with RRF — faithfulness jumped to 0.96. Day 3 I added cross-encoder reranking — faithfulness hit 1.0, meaning zero hallucination on my test set. I measured everything with RAGAS on a ground truth test set I created manually."
+
+
+## clear your conecpt
+
+Q1 — 7/10 ⚠️
+Context recall 0.80 means for 80% of questions the retriever found ALL chunks needed to answer correctly.
+But your guess about which question scored 0.0 is wrong. Look at your scores again:
+context_recall: [1.0, 1.0, 1.0, 1.0, 0.0]
+The scores match your test questions in order:
+Q1: "What F1 score..."          → 1.0 ✅
+Q2: "How many total accounts..."  → 1.0 ✅
+Q3: "How many genuine accounts..." → 1.0 ✅
+Q4: "What API was used..."        → 1.0 ✅
+Q5: "What deep learning models..." → 0.0 ❌
+So Q5 "What deep learning models were used?" scored 0.0 — the retriever completely failed to find the right chunks for this question. That's your Day 4 fix target.
+
+Q2 — 10/10 ✅
+Perfect. Bi-encoder = separate encodings compared by similarity. Cross-encoder = reads both together = direct answerability scoring.
+
+
+Q3 — 6/10 ⚠️
+You said "because of hybrid search and cross-encoder reranker" — but that explains why faithfulness improved, not why context_recall stayed at 0.80.
+The real answer
+
+"Faithfulness hit 1.0 because reranking ensured only highly relevant chunks reached the LLM — so answers were grounded. Context_recall stayed at 0.80 because Q5 still had retrieval failure — neither hybrid search nor reranking could find the right chunks for 'What deep learning models were used?' — that question needs a different fix."
+
+Day 3 scores:
+faithfulness = 1.0 → reranking ensures only relevant chunks reach LLM
+context_recall = 0.80 → Q5 "What deep learning models" still failing
+Q5 scored 0.0 → retriever not finding right chunks for this question
+Day 4 mission: fix Q5 retrieval failure
