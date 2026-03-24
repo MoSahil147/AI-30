@@ -79,3 +79,10 @@ Bad ground truth = RAGAS penalizes correct retrievals.
 Always write ground truth using language FROM the document,
 not your own summary of it.
 Lesson: RAGAS is only as good as your ground truth.
+
+Day 4 Final Scores:
+- faithfulness: 1.0000 (maintained)
+- context_recall: 0.9333 (up from 0.8000)
+
+Key lesson: Ground truth quality matters as much as retrieval.
+Bad ground truth = RAGAS penalizes correct answers.
