@@ -86,3 +86,7 @@ Day 4 Final Scores:
 
 Key lesson: Ground truth quality matters as much as retrieval.
 Bad ground truth = RAGAS penalizes correct answers.
+
+context recall we means the the 805 of the question or some values have answer in the chunk right?
+Faithfulness  = LLM's honesty   (answer vs chunks)
+Context Recall = Retriever's completeness (chunks vs ground truth)
