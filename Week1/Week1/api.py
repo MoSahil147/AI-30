@@ -39,7 +39,6 @@ def ask_question(request: AskRequest):
         answer="Pipeline not loaded yet"
     )
    
-   
 # rag prep 
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -101,7 +100,7 @@ def load_pipeline():
         persist_directory="chroma_db"
     )
     
-    # buld the BM25 index
+    # build the BM25 index
     tokenized_chunks = [
         chunk.page_content.lower().split()
         for chunk in unique_chunks
@@ -124,4 +123,89 @@ def load_pipeline():
 
 llm=load_pipeline()
 
-# Block 3
+# Block 3 - Search functions
+# same hybrid search + rerankung them
+
+def hybrid_search_single(query, k=10):
+    vector_results=vectorstore.similarity_search(query, k=10)
+    
+    tokenized_query=query.lower().split()
+    bm25_scores=bm25.get_scores(tokenized_query)
+    top_bm25_indices=np.argsort(bm25_scores)[::-1][:10]
+    bm25_results=[unique_chunks[i] for i in top_bm25_indices]
+    
+    chunk_scores={}
+    for rank, chunk in enumerate(vector_results):
+        content = chunk.page_content
+        if content not in chunk_scores:
+            chunk_scores[content]=0
+        chunk_scores[content]+=1/(rank+60)
+    
+    for rank, chunk in enumerate(bm25_results):
+        content=chunk.page_content
+        if content not in chunk_scores:
+            chunk_scores[content] = 0
+        chunk_scores[content]+=1/(rank+60)
+    
+    sorted_contents=sorted(
+        chunk_scores.keys(),
+        key=lambda x: chunk_scores[x],
+        reverse=True
+    )[:k]
+    
+    result_chunks=[]
+    for content in sorted_contents:
+        for chunk in unique_chunks:
+            if chunk.page_content==content:
+                result_chunks.append(chunk)
+                break
+            
+    return result_chunks
+
+def expand_query(question):
+    prompt=f"""Generate 3 different search queries for this question.
+Each query should approach the topic from a completely different angle.
+Use different keywords, technical terms and perspectives.
+Return ONLY the 3 queries, one per line, no numbering, no explanation.
+
+Question: {question}
+"""
+    response=llm.invoke(prompt)
+    queries=response.content.strip().split("\n")
+    queries=[q.strip() for q in queries if q.strip()]
+    # returning question along with the query we got
+    return [question] + queries[:3]
+
+def expanded_hybrid_search(question, k=10):
+    queries=expand_query(question)
+    all_chunk_scores={}
+    
+    for query in queries:
+        results = hybrid_search_single(query, k=10)
+        for rank, chunk in enumerate(results):
+            content = chunk.page_content
+            if content not in all_chunk_scores:
+                all_chunk_scores[content]=0
+            all_chunk_scores[content]+=1/(rank+60)
+            
+    sorted_contents= sorted(
+        all_chunk_scores.keys(),
+        key=lambda x: all_chunk_scores[x],
+        reverse=True
+    )[:k]
+    
+    result_chunks=[]
+    for content in sorted_contents:
+        for chunk in unique_chunks:
+            if chunk.page_content == content:
+                result_chunks.append(chunk)
+                break
+            
+    return result_chunks
+
+def rerank(query, chunks, top_k=3):
+    pairs=[[query, chunk.page_content] for chunk in chunks]
+    scores = reranker.predict(pairs)
+    ranked_indices=np.argsort(scores)[::-1][:top_k]
+    return [chunks[i] for i in ranked_indices]
+
