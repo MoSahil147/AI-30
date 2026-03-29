@@ -154,3 +154,19 @@ try/except in APIs = graceful error handling
 Without it → server crashes, user sees ugly Python error
 With it    → server catches error, returns clean JSON response
 Server stays running even when one request fails
+
+Day 5 Complete!
+Built FastAPI server with:
+- GET /health → server status check
+- POST /ask   → takes question, returns RAG answer
+
+Key concepts:
+- FastAPI + Uvicorn = framework + server
+- Pydantic models = request/response validation
+- Global variables = pipeline loaded once at startup
+- try/except = graceful error handling
+- Swagger at /docs = free auto-generated docs
+
+First real API call result:
+POST /ask {"question": "What API was used?"}
+→ {"answer": "Twitter API Tweepy."}
