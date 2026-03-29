@@ -34,10 +34,48 @@ def health_check():
 # ask endpoint - main functionnn
 @app.post("/ask", response_model=AskResponse)
 def ask_question(request: AskRequest):
-    return AskResponse(
+    # will validate the inputs and will not accept empty questions
+    if not request.question.strip():
+        raise HTTPException(
+            status_code=400,
+            detail="Question cannot be empty"
+        )
+    try:
+        # same running the prev day4 pipeline
+        # request se jo question aa raha hai usse we are using as the query
+        candidates = expanded_hybrid_search(request.question, k=10)
+        best_chunks=rerank(request.question, candidates, top_k=3)
+        
+        # build the context from chunks
+        context="\n\n".join([chunk.page_content for chunk in best_chunks])
+        
+        # build prompt
+        prompt = f"""Answer the question using only the context below.
+If the answer is not in the context, say "I don't know".
+
+Context:
+{context}
+
+Question: {request.question}
+Answer:"""
+        # call the daddy LLM directly
+        response = llm.invoke(prompt)
+    
+        return AskResponse(
         question=request.question,
-        answer="Pipeline not loaded yet"
-    )
+        answer=response.content
+        )
+    
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Pipeline error: {str(e)}"
+        )
+    
+# ## (test : curl -X POST http://127.0.0.1:8000/ask \
+#   -H "Content-Type: application/json" \
+#   -d '{"question": "What API was used to collect Twitter data?"}')   
+        
    
 # rag prep 
 from langchain_community.document_loaders import PyPDFLoader

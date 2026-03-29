@@ -143,3 +143,14 @@ global keyword   = "use the hallway whiteboard, not my room one"
 
 rag_pipeline.py  → defines hybrid_search_single() ONCE
 api.py           → imports from rag_pipeline.py
+
+2 endpoints 
+health and ask
+
+400 = client error — the user sent bad data (empty question, wrong format)
+500 = server error — something broke on OUR side (pipeline crashed, LLM failed)
+
+try/except in APIs = graceful error handling
+Without it → server crashes, user sees ugly Python error
+With it    → server catches error, returns clean JSON response
+Server stays running even when one request fails
