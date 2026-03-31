@@ -47,3 +47,11 @@ Procfile = startup instructions for cloud server
 Without it → server doesn't know how to start your app
 web: = process type (web server)
 $PORT = cloud assigns port, we don't hardcode
+
+## Live API
+Base URL: https://rag-api-svc6.onrender.com
+
+Test it:
+curl -X POST https://rag-api-svc6.onrender.com/ask \
+  -H "Content-Type: application/json" \
+  -d '{"question": "What API was used to collect Twitter data?"}'
