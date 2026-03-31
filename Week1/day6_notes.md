@@ -12,3 +12,7 @@ Hardcoded = works for one case only
 Parameterized = works for any case
 Always prefer parameters over hardcoded values
 
+200 = OK, success
+400 = bad request (sender sent wrong data)
+404 = not found (URL doesn't exist)
+500 = internal server error (our code crashed)
