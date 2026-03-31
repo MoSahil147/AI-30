@@ -38,12 +38,28 @@ llm=load_pipeline(PDF_PATH)
 def health_check():
     return {"status":"ok", "message":"RAG API is Runninnggg!!!"}
 
+
 @app.post("/ask", response_model=AskResponse)
 def ask_question(request: AskRequest):
     if not request.question.strip():
         raise HTTPException(
             status_code=400,
             detail="Question cannot be empty"
+        )
+    # knock knock - whoose there? .... WE WILL ASK THE QUESTIONS
+    # adding the guardrail.. to check if question is in the scope
+    scope_check=llm.invoke(
+        f"""Is this question related to fake account detection on social media, 
+deep learning, or the research paper's topics?
+Answer YES or NO only.
+
+Question: {request.question}"""
+    )
+
+    if "NO" in scope_check.content.upper():
+        return AskResponse(
+            question=request.question,
+            answer="I can only answer questions about fake account detection on social media. Please ask something related to the research paper."
         )
     try:
         candidates=expanded_hybrid_search(request.question, k=10)
