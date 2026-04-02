@@ -55,3 +55,15 @@ Test it:
 curl -X POST https://rag-api-svc6.onrender.com/ask \
   -H "Content-Type: application/json" \
   -d '{"question": "What API was used to collect Twitter data?"}'
+
+  Q1 — 7/10 ✅
+More precisely: guardrail makes an LLM call BEFORE the main pipeline to check if the question is in scope. If out of scope → returns a clean message immediately without running the expensive pipeline.
+Q2 — 10/10 ✅
+Perfect. Procfile = startup instructions. Without it the server doesn't know what command to run.
+Q3 — 8/10 ✅
+More specific: Render defaulted to Python 3.14 but our code needs Python 3.11. Pydantic V1 (used internally by LangChain) is incompatible with Python 3.14. runtime.txt was supposed to fix it but something else is still failing.
+
+RRF = Reciprocal Rank Fusion
+Formula: 1/(rank + 60)
+60 = constant to prevent top ranks dominating
+Chunks in BOTH lists get scores added = win
