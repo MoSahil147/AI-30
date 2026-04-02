@@ -128,7 +128,7 @@ Question: {question}"""
 print('Query Expansion Ready!!!')
     
     
-## Blcok 4: Hybrid Search + query expansion + reranking
+## Block 4: Hybrid Search + query expansion + reranking
 ## This si the main thing! Dont ignore
 
 def hybrid_search_single(query, k=10):
