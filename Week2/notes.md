@@ -51,3 +51,13 @@ extend() = add items flat
 append() = add as nested item
 
 LangChain's split_documents automatically copies the parent document's metadata to every child chunk. So every chunk remembers which paper and page it came from — for free.
+
+Day 8 Complete:
+- Loaded 3 papers: 50 pages, 402 unique chunks
+- Every chunk carries metadata: source + page
+- hybrid_search finds candidates across ALL 3 papers
+- rerank picks best 3
+- LLM prompt includes [Source: paper, Page: X] labels
+- Answer correctly cites which paper it came from
+
+Key bug fixed: [:top_k] not [top_k] - slice vs single element
