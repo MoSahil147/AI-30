@@ -87,3 +87,10 @@ We then fetch: the actual chunks AT those positions
 60 smooths out the scores so position doesn't matter TOO much — consistency across both searches matters more than being #1 in just one.
 
 Without history, the LLM sees "How is that used differently in BERT?" as a standalone question — it doesn't know "that" = attention mechanism, so it either guesses wrong or says "I don't know what 'that' refers to."
+
+Day 9 Complete:
+- conversation_history = list of dicts
+- Every question passes full history to LLM
+- LLM can now resolve "that", "it", "the above"
+- Bug fixed: chunk_soze → chunk_size (typo kills everything)
+- Memory confirmed: A2 referenced A1's context
