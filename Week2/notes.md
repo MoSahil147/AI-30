@@ -61,3 +61,29 @@ Day 8 Complete:
 - Answer correctly cites which paper it came from
 
 Key bug fixed: [:top_k] not [top_k] - slice vs single element
+
+Close — but that's not quite it! The preview chunks show before we even ask a question — they're just the first 5 chunks of unique_chunks. The real reason:
+attention.pdf was loaded first, so its chunks appear first in the list. Page 0 specifically because the PDF header/title page gets chunked into multiple small pieces.
+
+Q1 — Wrong! The system has NO memory. If you ask "How is that different in BERT?" it doesn't know what "that" refers to. It treats it as a brand new standalone question — loses all context from the previous turn. That's the problem Day 9 fixes.
+Q2 — 9/10 ✅ Exactly right.
+Q3 — 8/10 ✅ More precisely: more angles = more chances for the right chunk to appear = higher RRF score = better chunks win.
+
+Day 9 — Conversational Memory
+Problem: RAG has no memory between questions
+"How is that different?" → system doesn't know what "that" is
+Fix: store conversation history, pass it with every new question
+
+Conversation history = list of dicts
+Each dict: {"role": "user/assistant", "content": "..."}
+Pass full history with every new question
+LLM can then understand "that" / "it" / "the above"
+
+List of dicts — each dict has role and content. We keep appending to this list every turn. When we build the prompt, we pass the full history so the LLM knows what was said before.
+
+BM25 says: "positions 2, 3, 0 won"
+We then fetch: the actual chunks AT those positions
+
+60 smooths out the scores so position doesn't matter TOO much — consistency across both searches matters more than being #1 in just one.
+
+Without history, the LLM sees "How is that used differently in BERT?" as a standalone question — it doesn't know "that" = attention mechanism, so it either guesses wrong or says "I don't know what 'that' refers to."
