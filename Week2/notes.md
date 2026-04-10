@@ -101,3 +101,13 @@ Fix:      rewrite question BEFORE searching
 Rewriter: LLM looks at history + vague question
           → outputs standalone clear question
 Then:     search with clear question, answer with original
+
+Day 10 Complete:
+- rewrite_query() rewrites vague question using history
+- search happens with CLEAR question not vague one
+- Day 9: "I don't know" → Day 10: correct answer from bert.pdf
+- if no history → return original question unchanged
+- temperature=0 → deterministic rewrites every time
+
+Key insight: bad retrieval = bad answers
+             good query = good retrieval = good answers
