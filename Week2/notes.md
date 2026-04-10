@@ -94,3 +94,10 @@ Day 9 Complete:
 - LLM can now resolve "that", "it", "the above"
 - Bug fixed: chunk_soze → chunk_size (typo kills everything)
 - Memory confirmed: A2 referenced A1's context
+
+Day 10 - Query Rewriting
+Problem:  vague questions → wrong chunks
+Fix:      rewrite question BEFORE searching
+Rewriter: LLM looks at history + vague question
+          → outputs standalone clear question
+Then:     search with clear question, answer with original
