@@ -111,3 +111,12 @@ Day 10 Complete:
 
 Key insight: bad retrieval = bad answers
              good query = good retrieval = good answers
+
+Day 11 Complete:
+- .invoke() → .stream() = one line change
+- for chunk in llm.stream(prompt): print live
+- flush=True = forces immediate print
+- answer += chunk.content = save full answer for history
+- streaming + query rewriting + memory all working together!
+
+Bug fixed: turn['context'] → turn['content']
