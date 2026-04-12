@@ -120,3 +120,16 @@ Day 11 Complete:
 - streaming + query rewriting + memory all working together!
 
 Bug fixed: turn['context'] → turn['content']
+
+Day 12 Complete:
+- gr.ChatInterface = chat UI in one line
+- yield instead of return = streaming in browser
+- rewrite_query + hybrid_search + rerank all working in UI
+- anyone can open browser and use the RAG system!
+
+Week 2 Summary:
+Day 8  → Multi-document RAG + metadata
+Day 9  → Conversational memory
+Day 10 → Query rewriting
+Day 11 → Streaming responses
+Day 12 → Gradio web UI
