@@ -133,3 +133,12 @@ Day 9  → Conversational memory
 Day 10 → Query rewriting
 Day 11 → Streaming responses
 Day 12 → Gradio web UI
+
+Day 13 Complete:
+- @tool = converts Python function to agent tool
+- docstring = agent reads this to pick the right tool
+- verbose=True = see agent thinking in real time
+- ReAct loop = Thought → Action → Observation → repeat
+- max_iterations = stops infinite loops
+- clean tool output = agent can extract info correctly
+- Test 3: chained paper_info → calculator automatically!
