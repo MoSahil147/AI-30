@@ -142,3 +142,11 @@ Day 13 Complete:
 - max_iterations = stops infinite loops
 - clean tool output = agent can extract info correctly
 - Test 3: chained paper_info → calculator automatically!
+
+Day 14 Complete:
+- Agent has 2 tools: rag_search + web_search
+- RAG = fast, precise, trusted (3 papers)
+- Web = slow, broad, current info
+- Agent picks tool based on question type automatically
+- Prompt format MUST be exact - Though vs Thought breaks everything!
+- ddgs replaced duckduckgo-search package
