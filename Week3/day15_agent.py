@@ -2,6 +2,7 @@
 
 #os ke upar kuc nahi
 import os
+import io
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from langchain.tools import tool
@@ -26,6 +27,12 @@ def run_python_code(code:str)->str:
     Use this for calculations, data processing,or any task that needs code."""
     
     try:
+        ## clean the code before running it
+        code = code.strip()
+        code = code.replace("```python", "")
+        code = code.replace("```", "")
+        code = code.strip()
+        
         # capture print output
         import os
         import sys
@@ -44,11 +51,62 @@ def run_python_code(code:str)->str:
         if output:
             return f"Code ran successfully!\nOutput: \n{output}"
         else:
-            return "Code ran successfullt! No output."
+            return "Code ran successfully! No output."
     
     except Exception as e:
         sys.stdout = sys.__stdout__
-        return f"Error: {traceback.from_exc()}"
+        return f"Error: {traceback.format_exc()}"
     
 tools=[run_python_code]
 print(f"Tools ready: {[t.name for t in tools]}")
+
+# block 2: ReAct Prompt
+# thsi will tell the LLM, buddy think like this
+
+react_prompt=PromptTemplate.from_template("""
+You are a Python coding agent. Solve problems by writing and running Python code.
+
+You have access to the following tools:
+{tools}
+
+Use this EXACT format:
+Question: the input question you must write
+Thought: think aboout what code to write
+Action: run_python_code
+Action Input: the python code to run
+Observation: the result of the code
+... (repeat Thought/Action/Observation if needed)
+Thought: I now know the final answer
+Final Answer: the final answer to the question
+
+Tool names available: {tool_names}
+
+Question: {input}
+Thought: {agent_scratchpad} 
+""")
+
+print("Prompt Ready!")
+
+# Aget creaion and testing! 
+agent = create_react_agent(
+    llm=llm,
+    tools=tools,
+    prompt=react_prompt
+)
+
+agent_executor=AgentExecutor(
+    agent=agent,
+    tools=tools,
+    verbose=True,
+    max_iterations=5,
+    handle_parsing_errors=True
+)
+
+print("Agent Raedy! Testing now... \n")
+
+#test1
+result=agent_executor.invoke({
+    "input":"Calculate the factorial of 10 using Python"
+})
+
+print(f"\nFinal Answer: {result['output']}")
