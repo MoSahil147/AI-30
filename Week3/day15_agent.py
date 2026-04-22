@@ -107,15 +107,21 @@ agent_executor=AgentExecutor(
 
 print("Agent Raedy! Testing now... \n")
 
-# test1
-result1=agent_executor.invoke({
-    "input":"Calculate the factorial of 10 using Python"
-})
+# # test1
+# result1=agent_executor.invoke({
+#     "input":"Calculate the factorial of 10 using Python"
+# })
 
-print(f"\nFinal Answer: {result1['output']}")
+# print(f"\nFinal Answer: {result1['output']}")
 
-# test2
-result2=agent_executor.invoke({
-    "input":"Generate the first 10 Fibonacci numbers and calculate their sum"
+# # test2
+# result2=agent_executor.invoke({
+#     "input":"Generate the first 10 Fibonacci numbers and calculate their sum"
+# })
+# print(f"\nTest Answer: {result2['output']}")
+
+# Test 3 real world problem
+result3 = agent_executor.invoke({
+    "input": "I have a list of numbers [15, 3, 9, 8, 2, 7, 1, 6]. Sort them, find the median, and calculate the standard deviation."
 })
-print(f"\nTest Answer: {result2['output']}")
+print(f"\nTest 3 Answer: {result3['output']}")

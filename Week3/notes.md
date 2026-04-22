@@ -17,3 +17,11 @@ PromptTemplate = Mad Libs, LangChain fills the blanks
 Defensive programming = sanitize inputs, don't trust them
 Prompting = fragile (LLM ignores instructions sometimes)
 Code fix = reliable (always strips backticks before exec)
+
+Median = middle value when sorted (not same as mean)
+Mean = sum / count (affected by outliers)
+Median = robust to outliers
+
+Std Dev = how far numbers spread from average
+Small std dev = clustered together
+Large std dev = spread out
