@@ -25,3 +25,23 @@ Median = robust to outliers
 Std Dev = how far numbers spread from average
 Small std dev = clustered together
 Large std dev = spread out
+
+Day 15 agent = 1 tool (run_python_code) = can calculate
+Day 16 agent = multiple tools = can calculate + read + write
+Tool selection = agent decides which tool fits the problem
+Real agent power = right tool for right job
+
+Data dependency = step N needs output from step N-1
+Multi-tool order matters:
+1. read_file  → get data
+2. run_python_code → process data  
+3. write_file → save results
+Agent figures out this order automatically from the task!
+
+io.StringIO()   = fake terminal in memory
+sys.stdout      = where print() sends output
+exec_globals    = sandbox so code can't touch our variables
+exec(code)      = run a string as Python code
+'r' mode        = read file
+'w' mode        = write file (creates if missing)
+|||             = separator that won't appear in normal content
