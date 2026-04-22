@@ -65,24 +65,27 @@ print(f"Tools ready: {[t.name for t in tools]}")
 
 react_prompt=PromptTemplate.from_template("""
 You are a Python coding agent. Solve problems by writing and running Python code.
-
 You have access to the following tools:
 {tools}
 
 Use this EXACT format:
-Question: the input question you must write
-Thought: think aboout what code to write
+Question: the input question you must answer
+Thought: think about what code to write
 Action: run_python_code
-Action Input: the python code to run
+Action Input: the python code to run (NO backticks, plain code only)
 Observation: the result of the code
-... (repeat Thought/Action/Observation if needed)
+
+Once you receive an Observation with output, you MUST immediately do:
 Thought: I now know the final answer
-Final Answer: the final answer to the question
+Final Answer: [your answer here]
+
+Do NOT run the same code again after getting a result.
+Do NOT use ``` backticks in Action Input.
 
 Tool names available: {tool_names}
 
 Question: {input}
-Thought: {agent_scratchpad} 
+Thought: {agent_scratchpad}
 """)
 
 print("Prompt Ready!")
@@ -98,15 +101,21 @@ agent_executor=AgentExecutor(
     agent=agent,
     tools=tools,
     verbose=True,
-    max_iterations=5,
+    max_iterations=10,
     handle_parsing_errors=True
 )
 
 print("Agent Raedy! Testing now... \n")
 
-#test1
-result=agent_executor.invoke({
+# test1
+result1=agent_executor.invoke({
     "input":"Calculate the factorial of 10 using Python"
 })
 
-print(f"\nFinal Answer: {result['output']}")
+print(f"\nFinal Answer: {result1['output']}")
+
+# test2
+result2=agent_executor.invoke({
+    "input":"Generate the first 10 Fibonacci numbers and calculate their sum"
+})
+print(f"\nTest Answer: {result2['output']}")
