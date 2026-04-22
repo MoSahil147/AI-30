@@ -45,3 +45,9 @@ exec(code)      = run a string as Python code
 'r' mode        = read file
 'w' mode        = write file (creates if missing)
 |||             = separator that won't appear in normal content
+
+Day 16: Multi-tool agent
+3 tools: run_python_code, read_file, write_file
+Agent selects correct tool based on docstrings
+Data dependency: read → calculate → write
+Controlled testing = create input file yourself
