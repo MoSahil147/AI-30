@@ -51,3 +51,7 @@ Day 16: Multi-tool agent
 Agent selects correct tool based on docstrings
 Data dependency: read → calculate → write
 Controlled testing = create input file yourself
+
+Q1: exec_globals={} means the code runs in an empty namespace — it can't access your real variables like llm, tools, your API key. Without it, user code could do print(os.getenv("GROQ_API_KEY")) and steal your secrets. It's a security sandbox.
+Q2: Content can contain commas, spaces, newlines — all common characters. ||| is rare enough that it won't accidentally appear in content. Delimiter collision prevention.
+Q3: Right — but what HAPPENS after 10 iterations? The agent stops and returns whatever it has instead of running forever. Without it, a confused agent loops infinitely and burns your API credits.

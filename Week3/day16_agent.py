@@ -69,7 +69,7 @@ def write_file(input:str)->str:
     try:
         # splitting on ||| to get filepath and content separately
         # using comma may cause a problem as content might contain commas!
-        filepath, content=input.split("|||")
+        filepath, content=input.split("|||",1)
         
         # open in write mode: create file if doesnt' exist
         with open(filepath.strip(), 'w') as f:
