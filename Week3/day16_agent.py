@@ -101,6 +101,7 @@ IMPORTANT RULES:
 - Once you have file contents, calculate immediately.
 - Once you have the result, write immediately.
 - Once you have written, give Final Answer immediately.
+- If write_file returns 'Successfully written', your NEXT line MUST be Final Answer.
 
 Thought: I now know the final answer
 Final Answer: [your answer here]
